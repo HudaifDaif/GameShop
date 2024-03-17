@@ -57,9 +57,9 @@ app.MapGet(
         "/api/games/{id}",
         (int id) =>
         {
-          GameDTO? gameResult =  gameList.Find(game => game.Id == id);
+            GameDTO? gameResult = gameList.Find(game => game.Id == id);
 
-          return gameResult is not null ? Results.Ok(gameResult) : Results.NotFound();
+            return gameResult is not null ? Results.Ok(gameResult) : Results.NotFound();
         }
     )
     .WithName("GetGame");
@@ -80,6 +80,11 @@ app.MapPut(
     (int id, UpdateGameDTO game) =>
     {
         int index = gameList.FindIndex(game => game.Id == id);
+
+        if (index == -1)
+        {
+            return Results.NotFound();
+        }
 
         gameList[index] = new GameDTO(id, game.Name, game.Genre, game.Price, game.ReleaseDate);
 
