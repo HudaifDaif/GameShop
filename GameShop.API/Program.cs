@@ -74,4 +74,9 @@ app.MapPut("/api/games/{id}", (int id, UpdateGameDTO game) => {
     return Results.NoContent();
  });
 
+app.MapDelete("/api/games/{id}", (int id) => {
+    gameList.RemoveAll(game => game.Id == id);
+    return Results.NoContent();
+});
+
 app.Run();
