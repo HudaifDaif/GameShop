@@ -3,7 +3,7 @@ using GameShop.API.DTOs;
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-List<GameDTO> games =
+List<GameDTO> gameList =
 [
     new(
         Id: 1,
@@ -51,8 +51,18 @@ List<GameDTO> games =
 
 app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/api/games", () => games);
+app.MapGet("/api/games", () => gameList);
 
-app.MapGet("/api/games/{id}", (int id) => games.Find(game => game.Id == id));
+app.MapGet("/api/games/{id}", (int id) => gameList.Find(game => game.Id == id)).WithName("GetGame");
+
+app.MapPost(
+    "/api/games",
+    (CreateGameDTO game) =>
+    {
+        GameDTO newGame = new(gameList.Count + 1, game.Name, game.Genre, game.Price, game.ReleaseDate);
+        gameList.Add(newGame);
+        return Results.CreatedAtRoute("GetGame", new { id = newGame.Id }, newGame);
+    }
+);
 
 app.Run();
