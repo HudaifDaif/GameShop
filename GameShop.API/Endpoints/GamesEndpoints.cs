@@ -68,39 +68,49 @@ public static class GamesEndpoints
             )
             .WithName("GetGame");
 
-        group.MapPost(
-            "/",
-            (CreateGameDTO game) =>
-            {
-                GameDTO newGame =
-                    new(gameList.Count + 1, game.Name, game.Genre, game.Price, game.ReleaseDate);
-                gameList.Add(newGame);
-                return Results.CreatedAtRoute("GetGame", new { id = newGame.Id }, newGame);
-            }
-        );
-
-        group.MapPut(
-            "/{id}",
-            (int id, UpdateGameDTO game) =>
-            {
-                int index = gameList.FindIndex(game => game.Id == id);
-
-                if (index == -1)
+        group
+            .MapPost(
+                "/",
+                (CreateGameDTO game) =>
                 {
-                    return Results.NotFound();
+                    GameDTO newGame =
+                        new(
+                            gameList.Count + 1,
+                            game.Name,
+                            game.Genre,
+                            game.Price,
+                            game.ReleaseDate
+                        );
+                    gameList.Add(newGame);
+                    return Results.CreatedAtRoute("GetGame", new { id = newGame.Id }, newGame);
                 }
+            )
+            .WithParameterValidation();
 
-                gameList[index] = new GameDTO(
-                    id,
-                    game.Name,
-                    game.Genre,
-                    game.Price,
-                    game.ReleaseDate
-                );
+        group
+            .MapPut(
+                "/{id}",
+                (int id, UpdateGameDTO game) =>
+                {
+                    int index = gameList.FindIndex(game => game.Id == id);
 
-                return Results.NoContent();
-            }
-        );
+                    if (index == -1)
+                    {
+                        return Results.NotFound();
+                    }
+
+                    gameList[index] = new GameDTO(
+                        id,
+                        game.Name,
+                        game.Genre,
+                        game.Price,
+                        game.ReleaseDate
+                    );
+
+                    return Results.NoContent();
+                }
+            )
+            .WithParameterValidation();
 
         group.MapDelete(
             "/{id}",
