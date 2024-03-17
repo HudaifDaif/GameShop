@@ -1,1 +1,10 @@
 GET http://localhost:5084
+
+###
+#* GET all games
+GET http://localhost:5084/api/games
+
+###
+#* GET game by id
+GET http://localhost:5084/api/games/1
+
