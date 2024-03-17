@@ -9,6 +9,10 @@ GET http://localhost:5084/api/games
 GET http://localhost:5084/api/games/1
 
 ###
+#! GET game by id not found
+GET http://localhost:5084/api/games/100
+
+###
 #* POST game
 POST http://localhost:5084/api/games
 Content-Type: application/json

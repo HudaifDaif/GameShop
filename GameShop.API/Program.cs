@@ -53,7 +53,16 @@ app.MapGet("/", () => "Hello World!");
 
 app.MapGet("/api/games", () => gameList);
 
-app.MapGet("/api/games/{id}", (int id) => gameList.Find(game => game.Id == id)).WithName("GetGame");
+app.MapGet(
+        "/api/games/{id}",
+        (int id) =>
+        {
+          GameDTO? gameResult =  gameList.Find(game => game.Id == id);
+
+          return gameResult is not null ? Results.Ok(gameResult) : Results.NotFound();
+        }
+    )
+    .WithName("GetGame");
 
 app.MapPost(
     "/api/games",
@@ -66,17 +75,25 @@ app.MapPost(
     }
 );
 
-app.MapPut("/api/games/{id}", (int id, UpdateGameDTO game) => {
-    int index = gameList.FindIndex(game => game.Id == id);
+app.MapPut(
+    "/api/games/{id}",
+    (int id, UpdateGameDTO game) =>
+    {
+        int index = gameList.FindIndex(game => game.Id == id);
 
-    gameList[index] = new GameDTO(id, game.Name, game.Genre, game.Price, game.ReleaseDate);
+        gameList[index] = new GameDTO(id, game.Name, game.Genre, game.Price, game.ReleaseDate);
 
-    return Results.NoContent();
- });
+        return Results.NoContent();
+    }
+);
 
-app.MapDelete("/api/games/{id}", (int id) => {
-    gameList.RemoveAll(game => game.Id == id);
-    return Results.NoContent();
-});
+app.MapDelete(
+    "/api/games/{id}",
+    (int id) =>
+    {
+        gameList.RemoveAll(game => game.Id == id);
+        return Results.NoContent();
+    }
+);
 
 app.Run();
