@@ -59,10 +59,19 @@ app.MapPost(
     "/api/games",
     (CreateGameDTO game) =>
     {
-        GameDTO newGame = new(gameList.Count + 1, game.Name, game.Genre, game.Price, game.ReleaseDate);
+        GameDTO newGame =
+            new(gameList.Count + 1, game.Name, game.Genre, game.Price, game.ReleaseDate);
         gameList.Add(newGame);
         return Results.CreatedAtRoute("GetGame", new { id = newGame.Id }, newGame);
     }
 );
+
+app.MapPut("/api/games/{id}", (int id, UpdateGameDTO game) => {
+    int index = gameList.FindIndex(game => game.Id == id);
+
+    gameList[index] = new GameDTO(id, game.Name, game.Genre, game.Price, game.ReleaseDate);
+
+    return Results.NoContent();
+ });
 
 app.Run();

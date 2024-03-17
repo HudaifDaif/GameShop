@@ -14,8 +14,20 @@ POST http://localhost:5084/api/games
 Content-Type: application/json
 
 {
-    "name": "Test Game",
+    "name": "Test Post Game",
     "genre": "Test Genre",
-    "price": 10.50,
+    "price": 3.50,
+    "releaseDate": "2024-05-01"
+}
+
+###
+#* PUT game
+PUT http://localhost:5084/api/games/1
+Content-Type: application/json
+
+{
+    "name": "Test Put Game",
+    "genre": "Test Genre",
+    "price": 3.50,
     "releaseDate": "2024-05-01"
 }
