@@ -23,7 +23,7 @@ public static class GamesEndpoints
         new(
             Id: 3,
             Name: "Armored Core VI: Fires of Rubicon",
-            Genre: "Mech Madness",
+            Genre: "Mech",
             Price: 44.99m,
             ReleaseDate: new DateOnly(2023, 8, 24)
         ),
@@ -44,7 +44,7 @@ public static class GamesEndpoints
         new(
             Id: 6,
             Name: "Palworld",
-            Genre: "Action Adventure",
+            Genre: "Adventure",
             Price: 29.99m,
             ReleaseDate: new DateOnly(2024, 1, 19)
         )
