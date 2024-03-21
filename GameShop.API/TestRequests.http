@@ -19,7 +19,7 @@ Content-Type: application/json
 
 {
     "name": "Test Post Game",
-    "genre": "Test Genre",
+    "genreId": "1",
     "price": 3.50,
     "releaseDate": "2024-05-01"
 }
