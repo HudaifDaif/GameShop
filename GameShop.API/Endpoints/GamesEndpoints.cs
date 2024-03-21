@@ -2,6 +2,7 @@
 using GameShop.API.DTOs;
 using GameShop.API.Entities;
 using GameShop.API.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameShop.API.Endpoints;
 
@@ -57,7 +58,18 @@ public static class GamesEndpoints
     {
         RouteGroupBuilder group = app.MapGroup("/api/games");
 
-        group.MapGet("/", () => gameList);
+        group
+            .MapGet(
+                "/",
+                (GameShopContext dbContext) =>
+                {
+                    return dbContext
+                        .Games.Include(game => game.Genre)
+                        .Select(game => game.ToGameSummaryDTO())
+                        .AsNoTracking();
+                }
+            )
+            .WithName("GetGames");
 
         group
             .MapGet(
