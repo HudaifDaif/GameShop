@@ -42,7 +42,7 @@ Content-Type: application/json
 
 {
     "name": "Test Put Game",
-    "genre": "Test Genre",
+    "genreId": "1",
     "price": 3.50,
     "releaseDate": "2024-05-01"
 }

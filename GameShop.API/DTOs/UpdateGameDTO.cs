@@ -4,7 +4,7 @@ namespace GameShop.API.DTOs;
 
 public record class UpdateGameDTO(
     [Required] [StringLength(50)] string Name,
-    [Required] [StringLength(20)] string Genre,
+    int GenreId,
     [Range(0, 100)] decimal Price,
     DateOnly ReleaseDate
 );

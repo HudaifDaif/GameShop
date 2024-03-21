@@ -7,7 +7,7 @@ namespace GameShop.API.Endpoints;
 
 public static class GamesEndpoints
 {
-    private static List<GameDTO> gameList =
+    private static List<GameSummaryDTO> gameList =
     [
         new(
             Id: 1,
@@ -62,11 +62,13 @@ public static class GamesEndpoints
         group
             .MapGet(
                 "/{id}",
-                (int id) =>
+                (int id, GameShopContext dbContext) =>
                 {
-                    GameDTO? gameResult = gameList.Find(game => game.Id == id);
+                    Game? gameResult = dbContext.Games.Find(id);
 
-                    return gameResult is not null ? Results.Ok(gameResult) : Results.NotFound();
+                    return gameResult is not null
+                        ? Results.Ok(gameResult.ToGameDetailsDTO())
+                        : Results.NotFound();
                 }
             )
             .WithName("GetGame");
@@ -77,12 +79,15 @@ public static class GamesEndpoints
                 (CreateGameDTO game, GameShopContext dbContext) =>
                 {
                     Game newGame = game.ToEntity();
-                    newGame.Genre = dbContext.Genres.Find(game.GenreId);
 
                     dbContext.Games.Add(newGame);
                     dbContext.SaveChanges();
 
-                    return Results.CreatedAtRoute("GetGame", new { id = newGame.Id }, newGame.ToDTO());
+                    return Results.CreatedAtRoute(
+                        "GetGame",
+                        new { id = newGame.Id },
+                        newGame.ToGameDetailsDTO()
+                    );
                 }
             )
             .WithParameterValidation();
@@ -90,22 +95,17 @@ public static class GamesEndpoints
         group
             .MapPut(
                 "/{id}",
-                (int id, UpdateGameDTO game) =>
+                (int id, UpdateGameDTO game, GameShopContext dbContext) =>
                 {
-                    int index = gameList.FindIndex(game => game.Id == id);
+                    var existingGame = dbContext.Games.Find(id);
 
-                    if (index == -1)
+                    if (existingGame is null)
                     {
                         return Results.NotFound();
                     }
 
-                    gameList[index] = new GameDTO(
-                        id,
-                        game.Name,
-                        game.Genre,
-                        game.Price,
-                        game.ReleaseDate
-                    );
+                    dbContext.Entry(existingGame).CurrentValues.SetValues(game.ToEntity(id));
+                    dbContext.SaveChanges();
 
                     return Results.NoContent();
                 }
