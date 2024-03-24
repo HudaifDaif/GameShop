@@ -72,4 +72,4 @@ Content-Type: application/json
 
 ###
 #* DELETE game
-DELETE http://localhost:5084/api/games/6
+DELETE http://localhost:5084/api/games/1

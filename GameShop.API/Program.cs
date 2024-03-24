@@ -12,6 +12,8 @@ app.MapGet("/", () => "Hello World!");
 
 app.MapGamesEndpoints();
 
+app.MapGenreEndpoints();
+
 await app.MigrateDbAsync();
 
 app.Run();
