@@ -1,5 +1,5 @@
 ﻿@page "/"
-
+ 
 <PageTitle>Games</PageTitle>
 
 <h1>Game Catalogue</h1>
@@ -19,8 +19,9 @@
 </table>
 
 @code {
-    private Game[] games = new[]
-    {
+
+    private List<Game> games = new()
+        {
         new Game(){
             Id = 1,
             Name = "The Last of Us",
@@ -33,21 +34,22 @@
             Name = "Hollow Knight",
             Genre = "Adventure",
             Price = 9.99M,
-            ReleaseDate = new DateOnly(2017,02,24)
+            ReleaseDate = new DateOnly(2017,2,24)
         },
         new Game(){
             Id = 3,
             Name = "Prey",
             Genre = "First Person Shooter",
             Price = 10.49M,
-            ReleaseDate = new DateOnly(2017, 04,27)
+            ReleaseDate = new DateOnly(2017, 4,27)
         },
         new Game(){
             Id = 4,
             Name = "The Witcher 3: Wild Hunt",
             Genre = "RPG",
             Price = 19.99M,
-            ReleaseDate = new DateOnly(2015,05,2015)
+            ReleaseDate = new DateOnly(2015,5,18)
         }
     };
+
 }
